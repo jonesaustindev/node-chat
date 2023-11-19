@@ -5,5 +5,5 @@ interface HelloResponse {
 }
 
 export function getHello(req: Request, res: Response<HelloResponse>) {
-  res.status(200).send({ data: "hello from nodejs UPDATED!" });
+  res.status(200).send({ data: "hello from nodejs!" });
 }

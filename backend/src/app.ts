@@ -10,6 +10,7 @@ app.use(
     origin: process.env.ORIGIN_URL,
   })
 );
+app.use(express.json());
 
 app.use("/api/hello", helloRoutes);
 
