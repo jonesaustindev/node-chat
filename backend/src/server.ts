@@ -10,7 +10,7 @@ import { handleWebSocketConnection } from "./ws/websocketHandlers";
 const server = http.createServer(app);
 const wss = new WebSocketServer({ noServer: true });
 
-wss.on("connection", handleWebSocketConnection);
+wss.on("connection", (ws) => handleWebSocketConnection(ws, wss));
 
 server.on("upgrade", (request, socket, head) => {
   if (request.url === "/ws") {
@@ -18,7 +18,6 @@ server.on("upgrade", (request, socket, head) => {
       wss.emit("connection", ws, request);
     });
   } else {
-    console.log("Unknown URL");
     socket.destroy();
   }
 });

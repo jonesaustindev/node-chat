@@ -1,40 +1,36 @@
-import { useState, useEffect, useCallback } from "react";
-
-type MessageType = string; // TODO: update once chat is ready
-
-type MessageHandler = (message: MessageType) => void;
+import { useState, useEffect } from "react";
 
 type ErrorHandler = (error: Event) => void;
 
-const useWebSocket = (
-  url: string,
-  onMessage: MessageHandler,
-  onError?: ErrorHandler
-) => {
+const roomId = 4;
+
+const useWebSocket = (url: string, onError?: ErrorHandler) => {
   const [socket, setSocket] = useState<WebSocket | null>(null);
   const [isConnected, setIsConnected] = useState(false);
   const [shouldConnect, setShouldConnect] = useState(false);
 
   useEffect(() => {
-    if (shouldConnect) {
+    if (shouldConnect && url) {
       const webSocket = new WebSocket(url);
 
       webSocket.onopen = () => {
-        console.log("WebSocket Connected");
         setIsConnected(true);
+        joinRoom();
       };
 
       webSocket.onclose = () => {
-        console.log("WebSocket Disconnected");
         setIsConnected(false);
       };
 
       webSocket.onerror = (error: Event) => {
-        console.error("WebSocket Error: ", error);
         setIsConnected(false);
         if (onError) {
           onError(error);
         }
+      };
+
+      webSocket.onmessage = (event: MessageEvent) => {
+        console.log("Received message: ", event.data);
       };
 
       setSocket(webSocket);
@@ -46,26 +42,40 @@ const useWebSocket = (
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [url, shouldConnect]);
 
+  const joinRoom = () => {
+    socket?.send(JSON.stringify({ action: "joinRoom", roomId }));
+  };
+
   useEffect(() => {
-    if (!socket) return;
+    if (isConnected) {
+      joinRoom();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isConnected]);
 
-    socket.onmessage = (event: MessageEvent) => {
-      if (onMessage) {
-        onMessage(event.data as MessageType);
-      }
-    };
-  }, [socket, onMessage]);
+  const sendMessage = ({
+    token,
+    username,
+    messageText,
+  }: {
+    token: string;
+    username: string;
+    messageText: string;
+  }) => {
+    if (socket?.readyState === WebSocket.OPEN) {
+      socket.send(
+        JSON.stringify({
+          action: "sendMessage",
+          token,
+          roomId,
+          messageText,
+          username,
+        })
+      );
+    }
+  };
 
-  const sendMessage = useCallback(
-    (message: MessageType) => {
-      if (socket && socket.readyState === WebSocket.OPEN) {
-        socket.send(message);
-      }
-    },
-    [socket]
-  );
-
-  return { isConnected, sendMessage, shouldConnect, setShouldConnect };
+  return { isConnected, sendMessage, shouldConnect, setShouldConnect, socket };
 };
 
 export default useWebSocket;

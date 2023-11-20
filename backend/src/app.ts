@@ -1,7 +1,8 @@
 import express from "express";
 import cors from "cors";
 
-import helloRoutes from "./api/routes/helloRoutes";
+import authRoutes from "./api/routes/authRoutes";
+import chatRoutes from "./api/routes/chatRoutes";
 
 const app = express();
 
@@ -11,7 +12,9 @@ app.use(
   })
 );
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-app.use("/api/hello", helloRoutes);
+app.use("/api/auth", authRoutes);
+app.use("/api/chat", chatRoutes);
 
 export default app;
