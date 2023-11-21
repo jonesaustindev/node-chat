@@ -10,4 +10,8 @@ The frontend uses React with TypeScript, Tailwind, and Vite. The chat app is des
 
 ### Demo video of the chat in action
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/r3yDGLB3M5w?si=nsLtxS_0rprXfDTi&amp;controls=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
+
+https://github.com/jonesaustindev/node-chat/assets/36755092/44dcd18e-a121-4d67-b864-63e625ecfe9d
+
+
