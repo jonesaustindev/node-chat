@@ -5,6 +5,7 @@ import { useAuth } from "./context/AuthContext";
 import useWebSocket from "./hooks/useWebSocket";
 import ChatForm from "./components/ChatForm";
 import useChatMessages from "./hooks/useChatMessages";
+import CrtWrapper from "./components/CrtWrapper";
 
 const WS_URL = `${import.meta.env.VITE_WS_URL}/ws`;
 
@@ -47,35 +48,69 @@ function Chat() {
     }
   }, [user, navigate, shouldConnect, setShouldConnect]);
 
-  console.log(messages);
-
   return (
-    <div>
-      <button onClick={handleSignOut}>Sign out</button>
-      <h1>Chat</h1>
-      <div className="card">
-        <p>WebSocket is {isConnected ? "connected" : "disconnected"}</p>
-        {messages && messages.length > 0 ? (
-          <div>
-            {messages?.map((message, index) => {
-              return (
-                <div key={index} className="flex">
-                  <p className="mr-2">{message.username}</p>
-                  <p>{message.message}</p>
-                </div>
-              );
-            })}
-          </div>
-        ) : null}
+    <CrtWrapper>
+      {!shouldConnect ? (
+        <button className="text-white" onClick={handleConnect}>
+          Connect to WS
+        </button>
+      ) : (
         <div>
-          {shouldConnect ? (
-            <ChatForm onSubmit={handleWsMessageSend} />
-          ) : (
-            <button onClick={handleConnect}>Connect to WS</button>
-          )}
+          <div className="flex justify-between">
+            <div className="w-56 py-2 border-2 border-green-500 flex justify-center items-center">
+              <p
+                className="font-bold text-xs"
+                style={{
+                  textShadow: "0px 0px 8px rgba(0, 255, 0,0.5)",
+                }}
+              >
+                Connection status: {isConnected ? "connected" : "disconnected"}
+              </p>
+            </div>
+            <button
+              className="w-32 py-2 border-2 border-green-500 flex justify-center items-center"
+              style={{
+                textShadow: "0px 0px 8px rgba(0, 255, 0,0.5)",
+              }}
+              onClick={handleSignOut}
+            >
+              Sign out
+            </button>
+          </div>
+          <div className="mt-8 overflow-y-auto h-5/6 relative">
+            {messages && messages.length > 0 ? (
+              <div>
+                {messages?.map((message, index) => {
+                  const isCurrentUser = user?.username === message.username;
+                  return (
+                    <div key={index} className="flex mb-2">
+                      <p
+                        className="font-bold relative z-10 mr-2"
+                        style={{
+                          textShadow: "0px 0px 8px rgba(0, 255, 0,0.5)",
+                        }}
+                      >
+                        {isCurrentUser ? ">" : ""}
+                        {message.username}:
+                      </p>
+                      <p
+                        className="relative z-10"
+                        style={{
+                          textShadow: "0px 0px 8px rgba(0, 255, 0,0.5)",
+                        }}
+                      >
+                        {message.message}
+                      </p>
+                    </div>
+                  );
+                })}
+              </div>
+            ) : null}
+          </div>
         </div>
-      </div>
-    </div>
+      )}
+      {shouldConnect ? <ChatForm onSubmit={handleWsMessageSend} /> : null}
+    </CrtWrapper>
   );
 }
 

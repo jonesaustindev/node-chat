@@ -2,8 +2,7 @@ import jwt from "jsonwebtoken";
 import { Request as ExpressRequest, Response, NextFunction } from "express";
 
 interface UserPayload {
-  userId: number; // or any other properties you have in your JWT payload
-  // Add other user properties here if needed
+  userId: number;
 }
 
 export interface Request extends ExpressRequest {

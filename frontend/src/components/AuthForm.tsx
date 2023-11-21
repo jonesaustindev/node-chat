@@ -19,24 +19,28 @@ function AuthForm({ buttonText, onSubmit }: AuthFormProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
+    <form
+      onSubmit={handleSubmit}
+      className="flex flex-col space-y-4 w-2/3 m-auto"
+    >
       <input
         type="text"
         placeholder="Username"
         value={username}
         onChange={(e) => setUsername(e.target.value)}
-        className="p-2 border border-gray-300 rounded"
+        className="w-full p-2 bg-green-800 text-green-300 border border-green-700 focus:outline-none focus:border-green-500"
       />
       <input
         type="password"
         placeholder="Password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
-        className="p-2 border border-gray-300 rounded"
+        className="w-full p-2 bg-green-800 text-green-300 border border-green-700 focus:outline-none focus:border-green-500"
       />
       <button
         type="submit"
-        className="p-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+        className="p-2 bg-green-800 text-green-300 border border-green-700 hover:bg-green-600"
+        style={{ borderTopLeftRadius: 0, borderBottomLeftRadius: 0 }}
       >
         {buttonText}
       </button>

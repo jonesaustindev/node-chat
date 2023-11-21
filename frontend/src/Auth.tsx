@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 
 import AuthForm from "./components/AuthForm";
 import { useAuth } from "./context/AuthContext";
+import CrtWrapper from "./components/CrtWrapper";
 
 function Auth() {
   const { signIn, signUp, user } = useAuth();
@@ -43,7 +44,7 @@ function Auth() {
       : "Sign in with an existing account";
 
   return (
-    <div>
+    <CrtWrapper>
       {message ? (
         <div className="bg-red-500 text-white p-2">{message}</div>
       ) : null}
@@ -51,8 +52,16 @@ function Auth() {
         buttonText={formType === "signIn" ? "Sign in" : "Sign up"}
         onSubmit={handleSubmit}
       />
-      <button onClick={handleFormTypeChange}>{buttonText}</button>
-    </div>
+      <div className="w-2/3 m-auto mt-4">
+        <button
+          className="p-2 bg-green-800 text-green-300 border border-green-700 hover:bg-green-600"
+          style={{ borderTopLeftRadius: 0, borderBottomLeftRadius: 0 }}
+          onClick={handleFormTypeChange}
+        >
+          {buttonText}
+        </button>
+      </div>
+    </CrtWrapper>
   );
 }
 

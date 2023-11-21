@@ -8,21 +8,27 @@ function ChatForm({ onSubmit }: { onSubmit: (messageText: string) => void }) {
     if (!message) {
       return;
     }
+    setMessage("");
     onSubmit(message);
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
+    <form
+      onSubmit={handleSubmit}
+      className="mt-4 px-2 absolute bottom-2 left-0 right-0 z-10 flex"
+    >
       <input
-        type="text"
-        placeholder="Type here"
         value={message}
         onChange={(e) => setMessage(e.target.value)}
-        className="p-2 border border-gray-300 rounded"
+        type="text"
+        placeholder="Type a message..."
+        className="w-full p-2 bg-green-800 text-green-300 border border-green-700 focus:outline-none focus:border-green-500"
+        style={{ borderTopRightRadius: 0, borderBottomRightRadius: 0 }}
       />
       <button
         type="submit"
-        className="p-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+        className="p-2 bg-green-800 text-green-300 border border-green-700 hover:bg-green-600"
+        style={{ borderTopLeftRadius: 0, borderBottomLeftRadius: 0 }}
       >
         Send
       </button>
